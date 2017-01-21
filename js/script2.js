@@ -335,6 +335,7 @@ function proceder(){
 
 		var tabla = document.createElement("table");
 			tabla.style.fontSize = "1.65rem";
+			tabla.style.marginTop = "20px";
 			tabla.className = "col-lg-8";
 		var head = document.createElement("thead");
 		var body = document.createElement("tbody");
@@ -417,9 +418,8 @@ function proceder(){
 				}
 			var separador = document.createElement("hr");
 				separador.className = "s"+[i];
-				separador.style.position = "absolute";
-				separador.color = "#B6B8BA";
-				separador.width = "55%";
+				separador.style.display = "inline-block";
+				separador.style.color = "#B6B8BA";
 
 			var col1 = document.createElement("td"); //Nombre
 				col1.innerHTML = colProd;
@@ -489,14 +489,14 @@ function proceder(){
 					idel[i].removeEventListener("click",eliminar);
 				}
 				//Creo el segundo formulario en el que se va a seleccionar el metodo de pago
-				var formulario2 = formulario.cloneNode(false);
-					formulario2.id = "fp";//Forma de pago
-					formulario2.style.display = "block";
-					formulario2.addEventListener("submit",prevenir);
+				var formMetodoPago = formulario.cloneNode(false);
+					formMetodoPago.id = "fp";//Forma de pago
+					formMetodoPago.style.display = "block";
+					formMetodoPago.addEventListener("submit",prevenir);
 					//Proseguir con la compra al paso 3
-					formulario2.onsubmit = function(){
-						formulario2.style.display = "none";
-						var formulario3 = formulario2.cloneNode(false);
+					formMetodoPago.onsubmit = function(){
+						formMetodoPago.style.display = "none";
+						var formulario3 = formMetodoPago.cloneNode(false);
 							formulario3.id = "pg"; // Pago
 							formulario3.style.display = "block";
 
@@ -511,7 +511,8 @@ function proceder(){
 										botonA.style.backgroundPosition = "0px 0px";
 										botonA.addEventListener("click",agregarCarrito);
 										botonA.removeEventListener("click",quitarCarrito);
-									itemsAgregados[i].removeAttribute("class");
+									//itemsAgregados[i].removeAttribute("class");
+									itemsAgregados[i].className = "col-lg-3 col-lg-offset-1";
 								}
 
 								var tabla = carrito.getElementsByTagName("table")[0];
@@ -587,7 +588,7 @@ function proceder(){
 							atras.onclick = function(e){
 								e.preventDefault();
 								contForm.removeChild(formulario3);
-								formulario2.style.display = "block";
+								formMetodoPago.style.display = "block";
 								for(var i=0;i<itn.length;i++){
 									itn[i].disabled = "";
 									idel[i].style.display = "inline-block";
@@ -610,7 +611,7 @@ function proceder(){
 						formulario3.appendChild(atras);
 					}
 
-				contForm.appendChild(formulario2);
+				contForm.appendChild(formMetodoPago);
 				step.style.backgroundPosition = "-55px 0";
 				encMigas.innerHTML = "Forma de pago";
 
@@ -630,7 +631,7 @@ function proceder(){
 					var img = document.createElement("img");
 						img.src = datos["metodoP"][i].img;
 						img.alt = datos["metodoP"][i].nombre;
-					formulario2.appendChild(div);
+					formMetodoPago.appendChild(div);
 					div.appendChild(label);
 					label.appendChild(input);
 					label.appendChild(img);
@@ -652,7 +653,7 @@ function proceder(){
 					atras.style.fontSize = "1.5rem";
 					atras.onclick = function(e){
 						e.preventDefault();
-						contForm.removeChild(formulario2);
+						contForm.removeChild(formMetodoPago);
 						formulario.style.display = "block";
 						for(var i=0;i<itn.length;i++){
 							itn[i].disabled = "";
@@ -679,10 +680,10 @@ function proceder(){
 						option.innerHTML = i + " cuotas de $" + cuotas;
 					select.appendChild(option); 
 				}
-				formulario2.appendChild(smp);
-				formulario2.appendChild(select);
-				formulario2.appendChild(continuar);
-				formulario2.appendChild(atras);
+				formMetodoPago.appendChild(smp);
+				formMetodoPago.appendChild(select);
+				formMetodoPago.appendChild(continuar);
+				formMetodoPago.appendChild(atras);
 			}
 
 		var divsIn = new Array(9); //Divs para los inputs
