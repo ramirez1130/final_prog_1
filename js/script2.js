@@ -1,7 +1,6 @@
 var datos = {
 	juegos:[
 		{
-			id: 1,
 			nombre: "Assasins Creed Unity",
 			precio: "$1099",
 			img: "img/juego1.jpg",
@@ -181,7 +180,7 @@ function crearFondo(){
 			document.getElementsByTagName("html")[0].style.overflow = "auto";
 		}
 		if(document.getElementById("prodModal")){
-			this.removeChild(document.getElementById("prodModal"));
+			document.body.removeChild(document.getElementById("prodModal"));
 			document.body.removeChild(this);
 			document.getElementsByTagName("html")[0].style.overflow = "auto";
 		}
@@ -189,25 +188,34 @@ function crearFondo(){
 }
 
 //Funcion para crear la ventana modal al hacer click a la imagen de un producto.
-function prodModal(){
+function prodModal(elemento,categoria,descripcion){
+	console.log(elemento);
+	console.log(categoria);
+	console.log(descripcion);
 	var cont = document.createElement("div");
 		cont.id = "prodModal";
+		cont.className = "col-lg-10 col-lg-offset-1";
 		cont.style.position = "fixed";
-		cont.style.width = "960px";
-		cont.style.height = "100%";
-		cont.style.top = "0";
+		cont.style.top = "10%";
+		cont.style.padding = "15px";
 		cont.style.zIndex = "5";
 		cont.style.background = "white";
 
 	var img = document.createElement('img');
-		img.src = this.parentNode.getElementsByTagName("img")[0].src;
+		img.src = elemento.parentNode.getElementsByTagName("img")[0].src;
 		img.width = '300';
 		img.height = '450';
 
-	var titulo = this.parentNode.getElementsByTagName('h4')[0].innerHTML;
+	var titulo = document.createElement("h4");
+	titulo.innerHTML = elemento.parentNode.getElementsByTagName('h4')[0].innerHTML;
+
+	var descripcion = document.createElement("p");
+		descripcion.innerHTML = datos[categoria][elemento.id].info;
+	console.log(descripcion);
 	crearFondo();
 	document.body.appendChild(cont);
 	cont.appendChild(img);
+	cont.appendChild(titulo);
 }
 
 //Funcion para eliminar productos de la tabla generada en el paso1 del check
@@ -913,14 +921,14 @@ function quitarCarrito(){
 function dios(categoria,ubicacion){
 	for(var i=0;i<datos[categoria].length;i++){
 		var colocar = ubicacion.getElementsByTagName("ul")[0];
-		var links = document.createElement('a');
-			links.href = "#";
-			links.addEventListener("click",prevenir);
-			links.addEventListener("click",prodModal);
-
-		var art = document.createElement('li');
-			art.style.textAlign = "center";
-			art.className = "col-lg-3 col-lg-offset-1";
+		var articulo = document.createElement('li');
+			articulo.style.textAlign = "center";
+			articulo.style.cursor = "pointer";
+			articulo.className = "col-lg-3 col-lg-offset-1";
+			articulo.id = i;
+			articulo.addEventListener("click",function(){
+				prodModal(articulo,categoria,descripcion);
+			});
 
 		var img = document.createElement('img');
 			img.src = datos[categoria][i].img;
@@ -946,12 +954,12 @@ function dios(categoria,ubicacion){
 			agregar.addEventListener("click",prevenir);
 			agregar.addEventListener("click",agregarCarrito);
 
-		colocar.appendChild(art);
-		art.appendChild(links);
-		links.appendChild(img);
-		art.appendChild(nombre);
-		art.appendChild(precio);
-		art.appendChild(agregar);
+		colocar.appendChild(articulo);
+		//articulo.appendChild(links);
+		articulo.appendChild(img);
+		articulo.appendChild(nombre);
+		articulo.appendChild(precio);
+		articulo.appendChild(agregar);
 	}	
 }
 
@@ -970,7 +978,7 @@ document.onkeydown = function(event){
 				document.getElementsByTagName("html")[0].style.overflow = "auto";
 			}
 			if(document.getElementById("prodModal")){
-				document.getElementById("fondoModal").removeChild(document.getElementById("prodModal"));
+				document.body.removeChild(document.getElementById("prodModal"));
 				document.body.removeChild(document.getElementById("fondoModal"));
 				document.getElementsByTagName("html")[0].style.overflow = "auto";
 			}
