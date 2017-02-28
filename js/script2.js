@@ -47,17 +47,20 @@ var datos = {
 		{
 			"nombre": "FX4350",
 			"precio": "$1841",
-			"img": "img/proc1.png"
+			"img": "img/proc1.png",
+			"info": "Gana la competición con el poder sin límites de un procesador AMD FX. Desbloqueado desde el momento de su compra y a un precio muy competitivo, los procesadores AMD FX te dan más por tu dinero logrando un increíble rendimiento y una velocidad asombrosa."
 		},
 		{
 			"nombre": "FX6300",
 			"precio": "$1750",
-			"img": "img/proc2.png"
+			"img": "img/proc2.png",
+			"info":"El AMD FX-6300 alcanza los 3.5GHz y nos sorprende con 4100MHz en modo turbo para dejarnos claro que este chip de AMD sobre Socket AM3+ es de los más potentes y no descuida ninguno de sus aspectos. Esta pequeña pieza de silicio fabricada con una estructura de 64 bits dispone de 6 procesadores y 8MB de caché de nivel 3. La tecnología AMD Turbo Core le da el extra de potencia que necesitan algunas aplicaciones del FX 6300 para tener un rendimiento extra en los momentos más exigentes. Las mejoras al conjunto del chip han sido diseñadas para incrementar el acceso a la memoria y así nuestras aplicaciones sean más rápidas y estables en el AMD FX 6300."
 		},
 		{
 			"nombre": "FX8350",
 			"precio": "$2890",
-			"img": "img/proc3.png"
+			"img": "img/proc3.png",
+			"info":"El AMD FX-8350 es un procesador de 8 Núcleos mejor utilizado en un Ordenador de Sobremesa. Este procesador tiene una velocidad de procesamiento de 4.00 GHz"
 		}
 	],
 
@@ -65,7 +68,8 @@ var datos = {
 		{
 			"nombre": "Asus M5 A97 Evo",
 			"precio": "$1850",
-			"img":"img/moth1.png"
+			"img":"img/moth1.png",
+			"info":"Nueva ASUS USB 3.0 compatible con la tecnología Boost UASP (USB Attached SCSI Protocolo), el último estándar USB 3.0. Con la tecnología USB Boost 3.0, la velocidad de un dispositivo USB de transmisión se incrementa significativamente hasta un 170%, sumándose a una velocidad de transferencia de USB 3.0 que ya es impresionante. El software ASUS acelera automáticamente las velocidades de datos de los periféricos compatibles con USB 3.0 sin necesidad de ninguna interacción del usuario."
 		}
 	],
 
@@ -73,7 +77,8 @@ var datos = {
 		{
 			"nombre":"Fuente Sentey Bxp 650 Watts",
 			"precio":"$719",
-			"img":"img/fuen1.png"
+			"img":"img/fuen1.png",
+			"info":"La serie Extreme Rock Power está diseñada para brindar una solidez y confiabilidad con potencia real y continua. Con su alto efficiencia y robustes para alimentar sistemas con placas graficas de ultima generacion. Con el sistema de Multiprotecciones para evitar cualquier daño en los dispositivos conectados."
 		}
 	],
 
@@ -179,6 +184,11 @@ function crearFondo(){
 			this.parentNode.removeChild(this);
 			document.getElementsByTagName("html")[0].style.overflow = "auto";
 		}
+		if(document.getElementById("mensaje-exito")){
+			this.parentNode.removeChild(document.getElementById("mensaje-exito"));
+			this.parentNode.removeChild(this);
+			document.getElementsByTagName("html")[0].style.overflow = "auto";
+		}
 		if(document.getElementById("prodModal")){
 			document.body.removeChild(document.getElementById("prodModal"));
 			document.body.removeChild(this);
@@ -188,34 +198,49 @@ function crearFondo(){
 }
 
 //Funcion para crear la ventana modal al hacer click a la imagen de un producto.
-function prodModal(elemento,categoria,descripcion){
-	console.log(elemento);
-	console.log(categoria);
-	console.log(descripcion);
-	var cont = document.createElement("div");
-		cont.id = "prodModal";
-		cont.className = "col-lg-10 col-lg-offset-1";
-		cont.style.position = "fixed";
-		cont.style.top = "10%";
-		cont.style.padding = "15px";
-		cont.style.zIndex = "5";
-		cont.style.background = "white";
+function prodModal(id,categoria){
+	console.log(id);
+	var modal = document.createElement("div");
+		modal.id = "prodModal";
+		modal.className = "col-lg-10 col-lg-offset-1";
+		modal.style.position = "fixed";
+		modal.style.top = "10%";
+		modal.style.padding = "15px";
+		modal.style.zIndex = "5";
+		modal.style.background = "white";
+
+	var contenedorImg = document.createElement('div');
+		contenedorImg.className = "col-lg-4";
 
 	var img = document.createElement('img');
-		img.src = elemento.parentNode.getElementsByTagName("img")[0].src;
+		//img.src = elemento.parentNode.getElementsByTagName("img")[0].src;
+		img.src = datos[categoria][id].img;
 		img.width = '300';
 		img.height = '450';
 
+	var contenedorCont = document.createElement('div');
+		contenedorCont.className = "col-lg-8";
+
 	var titulo = document.createElement("h4");
-	titulo.innerHTML = elemento.parentNode.getElementsByTagName('h4')[0].innerHTML;
+		//titulo.innerHTML = elemento.parentNode.getElementsByTagName('h4')[0].innerHTML;
+		titulo.innerHTML = datos[categoria][id].nombre;
+		titulo.style.display = "inline-block";
+		titulo.style.verticalAlign = "top";
+		titulo.style.fontSize = "2rem";
 
 	var descripcion = document.createElement("p");
-		descripcion.innerHTML = datos[categoria][elemento.id].info;
-	console.log(descripcion);
+		descripcion.innerHTML = datos[categoria][id].info;
+		descripcion.style.display = "inline-block";
+		descripcion.style.fontSize = "1.75rem";
+		descripcion.style.marginTop = "30px";
+	
 	crearFondo();
-	document.body.appendChild(cont);
-	cont.appendChild(img);
-	cont.appendChild(titulo);
+	document.body.appendChild(modal);
+	modal.appendChild(contenedorImg);
+	contenedorImg.appendChild(img);
+	modal.appendChild(contenedorCont);
+	contenedorCont.appendChild(titulo);
+	contenedorCont.appendChild(descripcion);
 }
 
 //Funcion para eliminar productos de la tabla generada en el paso1 del check
@@ -241,11 +266,11 @@ function eliminar(){
 	}
 	
 	for(var i=0;i<elementos.length;i++){
-		var imagen = elementos[i].getElementsByTagName("a")[0].getElementsByTagName("img")[0];
-		var botonCambiar = elementos[i].getElementsByTagName("a")[1];
+		var imagen = elementos[i].getElementsByTagName("img")[0];
+		var botonCambiar = elementos[i].getElementsByClassName("boton-agregar")[0];
 		var precio = elementos[i].getElementsByTagName("h5")[0].innerHTML.slice(1);
 		if(imagen.alt == altDel){
-			elementos[i].removeAttribute("class");
+			elementos[i].className = "col-lg-3 col-lg-offset-1";
 			botonCambiar.style.backgroundPosition = "0 0";
 			botonCambiar.removeEventListener("click",quitarCarrito);
 			botonCambiar.addEventListener("click",agregarCarrito);
@@ -292,20 +317,13 @@ function validarForm(){
 
 function proceder(){
 	var comprados = document.getElementsByClassName("agregado");
+	
 	window.scrollTo( 0, posMigas );
 	if(comprados.length == 0){
 		var alerta = document.createElement("div");
 			alerta.id = "alerta";
-			alerta.style.textAlign = "center";
-			alerta.style.zIndex = "5";
-			alerta.style.width = "400px";
-			alerta.style.position = "fixed";
-			alerta.style.top = "20%";
-			alerta.style.marginLeft = "50%";
-			alerta.style.left = "-200px";
+			alerta.className = "alerta";
 			alerta.style.background = "rgba(234,30,40,0.5)";
-			alerta.style.border = "2px solid white"
-			alerta.style.padding = "5px";
 		var span = document.createElement("span");
 			span.innerHTML = "No agrego ningún producto al carrito.";
 			span.style.fontSize = "1.75rem";
@@ -356,7 +374,6 @@ function proceder(){
 		var tituloDel = document.createElement("th");
 		var separador0 = document.createElement("hr");
 			separador0.color = "#B6B8BA";
-//			separador0.width = "55%";
 
 			tituloProd.innerHTML = "Producto";
 			tituloProd.colSpan = "2";
@@ -380,9 +397,11 @@ function proceder(){
 			var nuevaFila = document.createElement("tr");
 				nuevaFila.className = "col"+[i];
 				nuevaFila.style.textAlign = "left";
-			var sourceMini = comprados[i].getElementsByTagName("a")[0].getElementsByTagName("img")[0].src;
+			var sourceMini = comprados[i].getElementsByTagName("img")[0].src;
+			var altImg = comprados[i].getElementsByTagName("img")[0].alt;
 			var miniImagen = document.createElement("img");
 				miniImagen.src = sourceMini;
+				miniImagen.alt = altImg;
 				miniImagen.width = "98";
 				miniImagen.height = "139";
 				miniImagen.style.borderRadius = "5px"
@@ -478,16 +497,16 @@ function proceder(){
 			showT.style.right = "20%";
 			showT.style.fontSize = "2rem";
 			showT.style.fontWeight = "bold";
-		var formulario = document.createElement("form");
-			formulario.id = "dt"; //Datos del titular
-			formulario.method = "post";
-			formulario.style.marginTop = "4%";
-			formulario.autocomplete = "off";
+		var formularioDatosPersonales = document.createElement("form");
+			formularioDatosPersonales.id = "dt"; //Datos del titular
+			formularioDatosPersonales.method = "post";
+			formularioDatosPersonales.style.marginTop = "4%";
+			formularioDatosPersonales.autocomplete = "off";
 			//Proseguir con la compra al paso 2
-			formulario.addEventListener("submit",prevenir); 
-			formulario.onsubmit = function(){
+			formularioDatosPersonales.addEventListener("submit",prevenir); 
+			formularioDatosPersonales.onsubmit = function(){
 				localStorage.nombre = document.getElementById("nombre").value;
-				formulario.style.display = "none";
+				formularioDatosPersonales.style.display = "none";
 				//Bloquear la modificacion de cantidades y eliminacion de productos
 				var itn = document.getElementsByClassName("cantidad");//Todos los inputs que modifican cantidad
 				var idel = document.getElementsByClassName("del"); // Todas las imagenes para eliminar productos en el check
@@ -496,8 +515,8 @@ function proceder(){
 					idel[i].style.backgroundPosition = "-100px 0";
 					idel[i].removeEventListener("click",eliminar);
 				}
-				//Creo el segundo formulario en el que se va a seleccionar el metodo de pago
-				var formMetodoPago = formulario.cloneNode(false);
+				//Creo el segundo formularioDatosPersonales en el que se va a seleccionar el metodo de pago
+				var formMetodoPago = formularioDatosPersonales.cloneNode(false);
 					formMetodoPago.id = "fp";//Forma de pago
 					formMetodoPago.style.display = "block";
 					formMetodoPago.addEventListener("submit",prevenir);
@@ -512,15 +531,12 @@ function proceder(){
 								e.preventDefault();
 								//Borrar todos los items agregados
 								var itemsAgregados = document.getElementsByClassName("agregado");
-								console.log(itemsAgregados)
 
-								for(var i=0;i<itemsAgregados.length;i++){
-									var botonA = itemsAgregados[i].getElementsByTagName("a")[1];
-										botonA.style.backgroundPosition = "0px 0px";
-										botonA.addEventListener("click",agregarCarrito);
-										botonA.removeEventListener("click",quitarCarrito);
-									//itemsAgregados[i].removeAttribute("class");
-									itemsAgregados[i].className = "col-lg-3 col-lg-offset-1";
+								for(var item of itemsAgregados){
+									var botonAgregar = item.getElementsByClassName("boton-agregar")[0];
+										botonAgregar.style.backgroundPosition = "0px 0px";
+										botonAgregar.addEventListener("click",agregarCarrito);
+										botonAgregar.removeEventListener("click",quitarCarrito);
 								}
 
 								var tabla = carrito.getElementsByTagName("table")[0];
@@ -534,7 +550,23 @@ function proceder(){
 								window.scrollTo( 0, posMigas );
 								spanCompra[0].innerHTML = 'Cantidad de productos: 0';
 								spanCompra[1].innerHTML = 'Total a pagar: $0';
+
+								var mensaje = document.createElement("div");
+									mensaje.id = "mensaje-exito";
+									mensaje.className = "alerta";
+									mensaje.style.background = "rgba(0,223,91,0.5)";
+								var span = document.createElement("span");
+									span.innerHTML = "Gracias por su compra.";
+									span.style.fontSize = "1.75rem";
+									span.style.color = "white";
+									span.style.display = "inline-block";
+									span.style.verticalAlign = "middle";
+
+								crearFondo();
+								document.body.appendChild(mensaje);
+								mensaje.appendChild(span);
 							}
+
 						contForm.appendChild(formulario3);
 						step.style.backgroundPosition = "-112px 0";
 						encMigas.innerHTML = "Pago";
@@ -736,6 +768,7 @@ function proceder(){
 						submit.style.opacity = "1";
 				}else{
 					var inputs = document.getElementsByTagName("form")[0].getElementsByTagName("input");
+
 					var submit = inputs[inputs.length-1];
 						submit.disabled = "disabled";
 						submit.style.opacity = "0.5";
@@ -795,7 +828,7 @@ function proceder(){
 		carrito.appendChild(contForm);
 		contForm.appendChild(titulo);
 		contForm.appendChild(showT);
-		contForm.appendChild(formulario);
+		contForm.appendChild(formularioDatosPersonales);
 
 		/* Funcion para que muestre el total a pagar de los productos
 		La razon por la que esta aca es porque hay que esperar a que este
@@ -823,13 +856,13 @@ function proceder(){
 				spans[i].style.display = "inline-block";
 				divsIn[i].style.width = "100%";
 				spans[i].style.fontSize = "1.45rem";
-				formulario.appendChild(divsIn[i]);
+				formularioDatosPersonales.appendChild(divsIn[i]);
 				divsIn[i].appendChild(label[i]);
 				label[i].appendChild(inputs[i]);
 				label[i].appendChild(spans[i])
 				inputs[i].style.marginTop = "4%";
 				//Ponemos el boton Enviar
-				formulario.appendChild(inputs[i+1]);
+				formularioDatosPersonales.appendChild(inputs[i+1]);
 				inputs[i+1].style.padding = "6px 20px";
 				inputs[i+1].style.marginTop = "3%";
 				var continuarC =  document.createElement("a");
@@ -839,7 +872,7 @@ function proceder(){
 					continuarC.style.fontSize = "1.5rem";
 					continuarC.href = "#";
 					continuarC.innerHTML = "Continuar Comprando.";
-					formulario.appendChild(continuarC);
+					formularioDatosPersonales.appendChild(continuarC);
 					continuarC.onclick = function(e){
 						e.preventDefault();
 						//check = 0; k = 0;
@@ -854,7 +887,7 @@ function proceder(){
 						window.scrollTo( 0, posMigas );
 					}
 			}else{
-				formulario.appendChild(divsIn[i]);
+				formularioDatosPersonales.appendChild(divsIn[i]);
 				divsIn[i].appendChild(label[i]);
 				label[i].appendChild(spans[i]);
 				label[i].appendChild(inputs[i]);
@@ -883,7 +916,7 @@ function proceder(){
 		}
 		/*Agregar el div con los selects esta posicionado aca porque habia que esperar que se cree el input con id #barrio*/
 		var antes = document.getElementById("barrio").parentNode.parentNode;
-		formulario.insertBefore(fechaC,antes);
+		formularioDatosPersonales.insertBefore(fechaC,antes);
 
 	}
 }
@@ -926,9 +959,6 @@ function dios(categoria,ubicacion){
 			articulo.style.cursor = "pointer";
 			articulo.className = "col-lg-3 col-lg-offset-1";
 			articulo.id = i;
-			articulo.addEventListener("click",function(){
-				prodModal(articulo,categoria,descripcion);
-			});
 
 		var img = document.createElement('img');
 			img.src = datos[categoria][i].img;
@@ -951,8 +981,18 @@ function dios(categoria,ubicacion){
 		var agregar = document.createElement('a');
 			agregar.href = "#";
 			agregar.innerHTML = 'Agregar';
+			agregar.className = 'boton boton-agregar';
 			agregar.addEventListener("click",prevenir);
 			agregar.addEventListener("click",agregarCarrito);
+
+		var detalle = document.createElement('a');
+			detalle.href = '#';
+			detalle.innerHTML = 'Detalle';
+			detalle.className = 'boton boton-detalle';
+			detalle.addEventListener('click',prevenir);
+			detalle.addEventListener("click",function(){
+				prodModal(this.parentNode.id,categoria);
+			});
 
 		colocar.appendChild(articulo);
 		//articulo.appendChild(links);
@@ -960,6 +1000,7 @@ function dios(categoria,ubicacion){
 		articulo.appendChild(nombre);
 		articulo.appendChild(precio);
 		articulo.appendChild(agregar);
+		articulo.appendChild(detalle);
 	}	
 }
 
@@ -974,6 +1015,11 @@ document.onkeydown = function(event){
 		if((codigo == 27) || (codigo == 13)){
 			if(document.getElementById("alerta")){
 				document.getElementById("fondoModal").parentNode.removeChild(document.getElementById("alerta"));
+				document.getElementById("fondoModal").parentNode.removeChild(document.getElementById("fondoModal"));
+				document.getElementsByTagName("html")[0].style.overflow = "auto";
+			}
+			if(document.getElementById("mensaje-exito")){
+				document.getElementById("fondoModal").parentNode.removeChild(document.getElementById("mensaje-exito"));
 				document.getElementById("fondoModal").parentNode.removeChild(document.getElementById("fondoModal"));
 				document.getElementsByTagName("html")[0].style.overflow = "auto";
 			}

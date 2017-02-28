@@ -219,10 +219,8 @@ header nav ul li:hover{
 	margin-top:4%;
 }
 
-.productos ul li a:last-child, #compra a{
+.boton{
 	display:block;
-	width:150px;
-	height:30px;
 	margin:0 auto;
 	text-indent:-10000px;
 	overflow:hidden;
@@ -231,8 +229,31 @@ header nav ul li:hover{
 	margin-bottom:2%;
 }
 
+.boton-agregar, #compra a{
+	width:150px;
+	height:30px;
+}
+
+.boton-detalle{
+	width:95px;
+	height:30px;
+	background-position:-22px -33px;
+}
+
 .productos ul li a:last-child:hover{
 	opacity:0.8;
+}
+
+.alerta{
+	text-align: center;
+	z-index: 5;
+	width:400px;
+	position:fixed;
+	top:20%;
+	margin-left:50%;
+	left:-200px;
+	border:2px solid white;
+	padding:5px;		
 }
 
 #compra{
