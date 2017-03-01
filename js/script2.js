@@ -315,6 +315,21 @@ function validarForm(){
 	}
 }
 
+//Funcion para vaciar el carrito
+function vaciar_carrito(){
+	var itemsAgregados = document.getElementsByClassName("agregado");
+
+	for(var item of itemsAgregados){
+		var botonAgregar = item.getElementsByClassName("boton-agregar")[0];
+			botonAgregar.style.backgroundPosition = "0px 0px";
+			botonAgregar.addEventListener("click",agregarCarrito);
+			botonAgregar.removeEventListener("click",quitarCarrito);
+	}
+
+	spanCompra[0].innerHTML = 'Cantidad de productos: 0';
+	spanCompra[1].innerHTML = 'Total a pagar: $0';
+}
+
 function proceder(){
 	var comprados = document.getElementsByClassName("agregado");
 	
@@ -751,7 +766,7 @@ function proceder(){
 			spans[8] = document.createElement("span");
 			spans[8].innerHTML = "Acepto los términos y condiciones de la compra.";
 		var inputs = new Array(10);
-			inputs[0] = document.createElement("input");inputs[0].type = "text";inputs[0].name = "Nombre";inputs[0].required = "required";inputs[0].style.display = "block";inputs[0].autofocus = "autofocus";inputs[0].id = "nombre";
+			inputs[0] = document.createElement("input");inputs[0].type = "text";inputs[0].name = "Nombre";inputs[0].required = "required";inputs[0].style.display = "block";inputs[0].id = "nombre";
 			inputs[1] = document.createElement("input");inputs[1].type = "text";inputs[1].name = "Apellido";inputs[1].required = "required";inputs[1].style.display = "block";
 			inputs[2] = document.createElement("input");inputs[2].type = "email";inputs[2].name = "E-mail";inputs[2].required = "required";inputs[2].style.display = "block";
 			inputs[3] = document.createElement("input");inputs[3].type = "tel";inputs[3].name = "Documento";inputs[3].required = "required";inputs[3].style.display = "block";
@@ -949,9 +964,8 @@ function quitarCarrito(){
 		this.style.backgroundPosition = '0 0';
 }
 
-//El nombre de la funcion es una expresion de que esta funcion crea todos los productos.
-//El argumento que recibe esta funcion es la categoria de los producots juegos,procesadores,mothers o fuentes.
-function dios(categoria,ubicacion){
+//El argumento que recibe esta funcion es la categoria de los productos juegos,procesadores,mothers o fuentes.
+function crearTodo(categoria,ubicacion){
 	for(var i=0;i<datos[categoria].length;i++){
 		var colocar = ubicacion.getElementsByTagName("ul")[0];
 		var articulo = document.createElement('li');
@@ -1006,12 +1020,6 @@ function dios(categoria,ubicacion){
 
 document.onkeydown = function(event){
 		var codigo = event.keyCode;
-		/*if(codigo == 8){
-			var tabla = carrito.getElementsByTagName("table")[0];
-			carrito.removeChild(tabla);
-			listaProd.style.display = "inline-block";
-			espacio2.style.display = "inline-block";
-		}*/
 		if((codigo == 27) || (codigo == 13)){
 			if(document.getElementById("alerta")){
 				document.getElementById("fondoModal").parentNode.removeChild(document.getElementById("alerta"));
@@ -1119,13 +1127,13 @@ function cargaDocumento(){
 	banners();
 	categorias[0].style.fontWeight = 'bold';
 	categorias[0].addEventListener("click",prevenir);
-	dios("juegos",juegos);
+	crearTodo("juegos",juegos);
 	listaProd.appendChild(procesadores);
-	dios("procesadores",procesadores);
+	crearTodo("procesadores",procesadores);
 	listaProd.appendChild(procesadores);
-	dios("mother",motherboards);
+	crearTodo("mother",motherboards);
 	listaProd.appendChild(motherboards);
-	dios("fuentes",fuentes);
+	crearTodo("fuentes",fuentes);
 	listaProd.appendChild(fuentes);
 	for(var i=1;i<categorias.length;i++){
 		categorias[i].addEventListener("click",prevenir);
@@ -1189,3 +1197,5 @@ window.addEventListener("load",cargaDocumento);
 btnver.addEventListener("click", prevenir);
 compra.getElementsByTagName("a")[0].addEventListener("click",prevenir);
 compra.getElementsByTagName("a")[0].addEventListener("click",proceder);
+compra.getElementsByTagName("a")[1].addEventListener("click",prevenir);
+compra.getElementsByTagName("a")[1].addEventListener("click",vaciar_carrito);

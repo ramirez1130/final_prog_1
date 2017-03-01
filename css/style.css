@@ -229,7 +229,7 @@ header nav ul li:hover{
 	margin-bottom:2%;
 }
 
-.boton-agregar, #compra a{
+.boton-agregar{
 	width:150px;
 	height:30px;
 }
@@ -256,6 +256,24 @@ header nav ul li:hover{
 	padding:5px;		
 }
 
+.botones-resumen{
+	background:#00D552;
+	color:white;
+	padding:7px;
+	font-size:15px;
+	border-radius:15px;
+	font-family:'audiowideregular';
+	display:inline-block;
+	width:100%;
+	margin:2% 0;
+}
+
+.botones-resumen:hover{
+	opacity: 0.8;
+	text-decoration: none;
+	color:white;
+}
+
 #compra{
 	border:1.5px solid #cccccc;
 	border-radius:15px;
@@ -265,6 +283,7 @@ header nav ul li:hover{
 	margin-left:3.5%;
 	background:white;
 	box-shadow: 0 0 20px black;
+	text-align: center;
 }
 
 #compra h3{
@@ -273,10 +292,10 @@ header nav ul li:hover{
 	text-shadow: 0 0 6px black;
 }
 
-#compra a{
+/*#compra a{
 	background-position:0 -70px;
 	margin-top:10%;
-}
+}*/
 
 #compra span{
 	display:block;
